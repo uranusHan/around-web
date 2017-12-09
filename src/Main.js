@@ -4,7 +4,9 @@ import {WrappedRegister} from "./Register";
 export class Main extends React.Component {
     render() {
         return (
-            <WrappedRegister />
+            <section className="main">
+                <WrappedRegister />
+            </section>
         );
     }
 }
