@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Tooltip, Icon, Button } from 'antd';
+import { Form, Input, Button, Tooltip, Icon, message} from 'antd';
 import $ from 'jquery';
+import {API_ROOT} from "./constants";
 
 const FormItem = Form.Item;
 
@@ -13,6 +14,18 @@ class RegistrationForm extends React.Component {
         this.props.form.validateFieldsAndScroll((err, values) => {
             if (!err) {
                 console.log('Received values of form: ', values);
+                $.ajax({
+                    url: `${API_ROOT}/signup`,
+                    method: 'POST',
+                    data: JSON.stringify({
+                        username: values.username,
+                        password: values.password
+                    })
+                }).then(function(response) {
+                    message.success(response);
+                }).catch(function(error) {
+                   message.error(error.responseText);
+                });
             }
         });
     }
@@ -72,15 +85,15 @@ class RegistrationForm extends React.Component {
                         {...formItemLayout}
                         label={(
                             <span>
-                  Nickname&nbsp;
-                                <Tooltip title="What do you want others to call you?">
+                  Username&nbsp;
+                     <Tooltip title="What do you want others to call you?">
                     <Icon type="question-circle-o" />
                   </Tooltip>
                 </span>
                         )}
                     >
-                        {getFieldDecorator('nickname', {
-                            rules: [{ required: true, message: 'Please input your nickname!', whitespace: true }],
+                        {getFieldDecorator('username', {
+                            rules: [{ required: true, message: 'Please input your username!', whitespace: true }],
                         })(
                             <Input />
                         )}
