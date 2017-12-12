@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form, Input, Button, Tooltip, Icon, message} from 'antd';
 import $ from 'jquery';
-import {API_ROOT} from "./constants";
+import {API_ROOT} from "../constants";
 
 const FormItem = Form.Item;
 
@@ -138,4 +138,4 @@ class RegistrationForm extends React.Component {
     }
 }
 
-export const WrappedRegister = Form.create()(RegistrationForm);
+export const Register = Form.create()(RegistrationForm);
