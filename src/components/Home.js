@@ -7,15 +7,15 @@ const operations = <Button>Extra Action</Button>;
 
 export class Home extends React.Component {
     state = {
+        error: '',
         loadingGeoLocation: false,
-
     }
     //it's a lifecycle function, not use arrow function, no need to binding, this keyword is available
     componentDidMount() {
         //loading data
         //geolocation
         if ("geolocation" in navigator) {
-            this.setState({loadingGeoLocation: true});
+            this.setState({loadingGeoLocation: true, error: ''});
             navigator.geolocation.getCurrentPosition(
                 this.onSuccessLoadGeoLocation,
                 this.onFailedLoadGeoLocation,
@@ -23,22 +23,24 @@ export class Home extends React.Component {
             );
 
         } else {
-           console.log('geo location not supported!');
+           this.setState({error: 'geo location not supported!'});
         }
     }
     //auto bind using arrow function
     onSuccessLoadGeoLocation = (position) => {
-        this.setState({loadingGeoLocation: false});
+        this.setState({loadingGeoLocation: false, error: ''});
         //destructor
         const {latitude: lat, longitude: lon} = position.coords;
         localStorage.setItem(POS_KEY, JSON.stringify({lat: lat, lon: lon}));
     }
-    onFailedLoadGeoLocation = () => {
-        this.setState({loadingGeoLocation: false});
+    onFailedLoadGeoLocation = (error) => {
+        this.setState({loadingGeoLocation: false, error: 'Failed to load geo location!'});
     }
 
     getGalleryPanelContent = () => {
-        if (this.state.loadingGeoLocation) {
+        if (this.state.error) {
+            return <div>{this.state.error}</div>;
+        } else if (this.state.loadingGeoLocation) {
             // show spin
             return <Spin tip="Loading geo location ..." />
         }
