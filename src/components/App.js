@@ -1,13 +1,18 @@
 import React, { Component } from 'react';
-import '../styles/App.css';
 import {Header} from './Header';
 import {Main} from './Main';
+import '../styles/App.css';
+
 class App extends Component {
+  //ES6+/ES7 Syntax
+    state ={
+        isLoggedIn: false,
+    }
   render() {
     return (
       <div className="App">
-        <Header />
-        <Main />
+        <Header isLoggedIn={this.state.isLoggedIn}/>
+        <Main isLoggedIn={this.state.isLoggedIn}/>
       </div>
     );
   }
