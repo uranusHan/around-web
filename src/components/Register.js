@@ -1,6 +1,7 @@
 import React from 'react';
-import { Form, Input, Button, Tooltip, Icon, message} from 'antd';
 import $ from 'jquery';
+import { Form, Input, Button, Tooltip, Icon, message} from 'antd';
+import { Link } from 'react-router-dom';
 import {API_ROOT} from "../constants";
 
 const FormItem = Form.Item;
@@ -21,10 +22,13 @@ class RegistrationForm extends React.Component {
                         username: values.username,
                         password: values.password
                     })
-                }).then(function(response) {
+                }).then(response => {
                     message.success(response);
-                }).catch(function(error) {
-                   message.error(error.responseText);
+                    this.props.history.push('/login');
+                }, error => {
+                    message.error(error.responseText);
+                }).catch(error => {
+                   message.error(error);
                 });
             }
         });
@@ -79,7 +83,6 @@ class RegistrationForm extends React.Component {
 
         return (
             <div className="register-form">
-                <h2 id="register_title">Register</h2>
                 <Form onSubmit={this.handleSubmit}>
                     <FormItem
                         {...formItemLayout}
@@ -130,7 +133,8 @@ class RegistrationForm extends React.Component {
 
 
                     <FormItem {...tailFormItemLayout}>
-                        <Button type="primary" htmlType="submit">Register</Button>
+                        <Button type="primary" htmlType="submit" className="register-form-button">Register</Button>
+                        <p>I already have account, go back to <Link to="/login">login</Link></p>
                     </FormItem>
                 </Form>
             </div>
