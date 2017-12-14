@@ -10,6 +10,7 @@ export class Home extends React.Component {
     state = {
         posts:[],
         error: '',
+        loadingPosts: false,
         loadingGeoLocation: false,
     }
     //it's a lifecycle function, not use arrow function, no need to binding, this keyword is available
@@ -46,26 +47,33 @@ export class Home extends React.Component {
         } else if (this.state.loadingGeoLocation) {
             // show spin
             return <Spin tip="Loading geo location ..." />
+        } else if (this.state.loadingPosts) {
+            return <Spin tip="Loading posts ..."/>
         }
         return null;
     }
     loadNearbyPosts = () => {
-        const {lat, lon} = JSON.parse(localStorage.getItem(POS_KEY));
+       // const {lat, lon} = JSON.parse(localStorage.getItem(POS_KEY));
+        const {lat,lon} = {"lat": 37.5629917, "lon": -122.32552539999998};
+        this.setState({loadingPosts: true});
         $.ajax({
             url: `${API_ROOT}/search?lat=${lat}&lon=${lon}&range=20`,
             method: 'GET',
-            header: {
-                Authorization: `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`
+            headers: {
+                'Authorization': `${AUTH_PREFIX} ${localStorage.getItem(TOKEN_KEY)}`
             },
         })
             .then((response) => {
                 console.log(response);
+
                 this.setState({
-                    posts: response
+                    posts: response,
+                    loadingPosts: false,
                 });
             }, (error) => {
                 this.setState({
-                    error: error.responseText
+                    error: error.responseText,
+                    loadingPosts: false,
                 });
             })
             .catch((error) => {
