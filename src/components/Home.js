@@ -69,6 +69,7 @@ export class Home extends React.Component {
                 this.setState({
                     posts: response,
                     loadingPosts: false,
+                    error: ''
                 });
             }, (error) => {
                 this.setState({
