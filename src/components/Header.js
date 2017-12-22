@@ -1,7 +1,7 @@
 import React from 'react';
 import { Icon } from 'antd';
 import logo from '../assets/images/logo.svg';
-import PropTypes from 'prop-types';
+import {PropTypes} from 'prop-types';
 export class Header extends React.Component {
     static propTypes = {
         isLoggedIn: PropTypes.bool.isRequired,
